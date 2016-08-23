@@ -7,4 +7,18 @@ Note that in this test the goal is to time the transfer of two large data files 
 
 The first part of the test invloves starting up the two listening servers on servers 5 and 7.  Do this on server 5 with command
 
-``
+`python PServer1.py`
+
+and this command on server7
+
+`python PServer2.py`
+
+Now run simple_switch.py which is a default Layer 2 switch that comes with Ryu.  [it will forward transfer files an put in the proper flows]  Do this with command on grnlntrn server
+
+`ryu-manager --verbose simple_switch.py`
+
+Next run client file on server6 [after grnlntrn terminal says that it has moved to main mode] using command
+
+`python PClient.py`
+
+and now all terminals should be doing something, and you should see in roughly twenty seconds (if the files you are transferring are 1GB files) that booth files were given to the servers successfully.  Now if you look at bparlog1.txt  and bparlog2.txt we can see how quickly each fiile was transferred.  We can then compare these times to the times displayed in the prior test and see that the overhead of adding and installing flows was substantial enough to prove that just regular prarallel file transfer is faster than a round-robin file transfer.  This is kind of a complex sanity check on this switch, as this is how any commercial-grade switch should be behaving.
